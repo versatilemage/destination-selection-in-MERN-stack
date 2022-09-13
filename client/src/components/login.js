@@ -24,7 +24,7 @@ function Login () {
                     <input type="password" placeholder="password *" className="border border-slate-400 rounded-sm px-4 py-3 
                     text-justify rounded-lg"></input>
                     <button className="text-xl uppercase bg-blue-600 rounded-lg text-white px-4 py-3 w-full self-center"
-                    onChange={homepage}>sign in</button>
+                    onClick={homepage}>sign in</button>
                     <p className="text-lg text-slate-900 self-center font-bold">Don’t have an account? <button className="text-xl text-blue-600"
                     onClick={nextpage}>SIGN UP</button></p>
                 </form>
