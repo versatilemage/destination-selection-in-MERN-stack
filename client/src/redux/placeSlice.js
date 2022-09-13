@@ -4,11 +4,15 @@ import axios from "axios";
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchPlaces = createAsyncThunk('getPlace', () => {
-    const res = axios.get("http://localhost:6001/allplace").then((data) => {
-        return data.json()
-    })
-    return res
+export const fetchPlaces = createAsyncThunk('place/getPlace', async() => {
+    try{
+        const res = await fetch("http://localhost:6001/allplace").then((data) => {
+            return data.json()
+        })
+        return res
+    } catch (err) {
+        return err
+    }
 })
 
 const getAlldestination = createSlice({
