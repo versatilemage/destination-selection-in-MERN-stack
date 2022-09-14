@@ -184,7 +184,8 @@ export const VerifyToken = (req, res, next) => {
                 message: "invalid token is used here"
             })
         }
-        req.id = user._id
+        console.log(user._id,"userid")
+        req.id = user.id
     })
     next()
 }
@@ -206,7 +207,7 @@ export const findTourist = async (req, res) => {
                 return res.send({
                     status: 200,
                     message: "Welcome Tourist",
-                    data: data
+                    data: {data}
                 })
             }
         })
