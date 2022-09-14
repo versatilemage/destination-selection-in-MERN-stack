@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 
 app.use(cookieParser())
 
-app.use(cors())
+app.use(cors({credentials: true, origin:"http://localhost:3000"}))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -73,19 +73,19 @@ const uploadPic = multer({
   },
 })
 
-app.post("/newdestination", upload.single("image"), addDestination)
+app.post("/newdestination", upload.single("image"), addDestination);
 
-app.get("/getbytitle/:title", searchDestination)
+app.get("/getbytitle/:title", searchDestination);
 
-app.get("/getbytags/:tags", getDestinationbyTag)
+app.get("/getbytags/:tags", getDestinationbyTag);
 
-app.get("/allplace", getAlldestination)
+app.get("/allplace", getAlldestination);
 
-app.post("/createuser", uploadPic.single("userimage"), createUser)
+app.post("/createuser", uploadPic.single("userimage"), createUser);
 
-app.post("/login", loginTourist)
+app.post("/login", loginTourist);
 
-app.get("/findtourist", VerifyToken, findTourist)
+app.get("/findtourist", VerifyToken, findTourist);
 
 app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`)
