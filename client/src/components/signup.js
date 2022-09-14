@@ -8,7 +8,7 @@ import { useState } from "react";
 
 import {useSelector, useDispatch} from 'react-redux';
 
-import { fetchTouristdetails } from '../redux/TouristDetails';
+// import { fetchTouristdetails } from '../redux/TouristDetails';
 
 function Signup () {
     const navigate = useNavigate()
@@ -32,18 +32,22 @@ function Signup () {
             }
           }
           await axios.post(`http://localhost:6001/createuser`, formdata, config)
-          dispatch(fetchTouristdetails(mail))
-        navigate("/home")
+        //   dispatch(fetchTouristdetails(mail))
+        navigate("/")
+    }
+
+    const already = (e) => {
+        navigate("/")
     }
 
     const handleProfileimg = (e) => { 
         setImage(e.target.files[0]);
     }
 
-    const MailHandling = (e) => {
-        setmail(e.target.element[0].value)
-        dispatch(fetchTouristdetails(e.target.element[0].value))
-    }
+    // const MailHandling = (e) => {
+    //     setmail(e.target.element[0].value)
+    //     dispatch(fetchTouristdetails(e.target.element[0].value))
+    // }
     return (
         <>
             <FormHeader/>
@@ -65,7 +69,7 @@ function Signup () {
                     <p className="text-red-600 capitalize"><strong className="text-black capitalize">note: </strong>file should not exceed 50kb</p>
                     <button className="text-xl uppercase bg-blue-600 rounded-lg text-white px-4 py-3 w-full self-center" onClick={nextpage}>sign up</button>
                     <p className="text-lg text-slate-900 self-center font-bold">Already a user <button className="text-xl text-blue-600"
-                    onClick={nextpage}>SIGN IN</button></p>
+                    onClick={already}>SIGN IN</button></p>
                 </form>
             </div>
         </>
