@@ -4,10 +4,10 @@ import axios from "axios";
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchTouristdetails = createAsyncThunk("cred/usercred", async(search) => {
+export const fetchTouristdetails = createAsyncThunk("cred/usercred", async() => {
     try{
-        const res = await fetch (`http://localhost:6001/findtourist/${search}`).then((data) => {
-            return res.json()
+        const res = await fetch (`http://localhost:6001/findtourist`).then((data) => {
+            return data.json()
         })
         return res
     }catch(err) {
@@ -26,7 +26,7 @@ const getTouristCredentials = createSlice({
             state.loading = true
         },
         [fetchTouristdetails.fulfilled]: (state, action) => {
-            state.menu = action.payload;
+            state.menu = action.payload.data;
             state.loading = false
         },
         [fetchTouristdetails.rejected]: (state, action) => {
