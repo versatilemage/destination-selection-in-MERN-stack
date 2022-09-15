@@ -13,7 +13,7 @@ function CreateDestinations () {
     const [message, setMessage] = useState("")
     const [file, setFile] = useState("")
 
-    console.log(title, tags, message, file)
+    // console.log(title, tags, message, file)
 
     const HandleChanges = async(e) => {
         e.preventDefault()
