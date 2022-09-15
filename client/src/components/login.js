@@ -2,6 +2,8 @@ import FormHeader from "./formheader"
 
 import { useNavigate } from 'react-router-dom';
 
+import {Link} from "react-router-dom"
+
 import { useState } from "react";
 
 import axios from "axios";
@@ -10,26 +12,39 @@ function Login () {
 
     const navigate = useNavigate()
 
-    const[email, setemail] = useState("");
-    const[password, setPassword] = useState("")
+    const[emails, setemail] = useState("");
+    const[passwords, setPassword] = useState("")
 
-    const nextpage = (e) => {
-        navigate("/signup")
-    }
+    // const homepage = async() => {
+    // const config = {headers: {
+    //     'Content-type':'application/json'
+    // }}
 
-    const homepage = async(e) => {
-        const res = axios.post("http://localhost:6001/login",{
-            email: email,
-            password: password
-        })
-        // navigate("/home")
-        const data = await res.data;
-        return data
+    //     const res = axios.post("http://localhost:6001/login", config,{
+    //         email: emails,
+    //         password: passwords
+    //     }).catch((err) => console.log(err))
+    //     const datas = await res.data;
+    //     return datas
+    // }
+
+    const homepage = async() => {
+        const formdata = new FormData()
+        formdata.append("email", emails);
+        formdata.append("password", passwords);
+
+        const config = {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          }
+
+        await axios.post("http://localhost:6001/login",formdata, config)
     }
 
     const handleForm = (e) => {
         e.preventDefault()
-        homepage().then(() => navigate("/home"))
+        homepage().then(() => navigate("/user"))
     }
 
     return (
@@ -51,10 +66,9 @@ function Login () {
                     text-justify rounded-lg"
                     onChange={(e) => setPassword(e.target.value)}></input>
                     
-                    <button className="text-xl uppercase bg-blue-600 rounded-lg text-white px-4 py-3 w-full self-center">login</button>
+                    <button className="text-xl uppercase bg-blue-600 rounded-lg text-white px-4 py-3 w-full self-center" type="submit">login</button>
                     
-                    <p className="text-lg text-slate-900 self-center font-bold">Don’t have an account? <button className="text-xl text-blue-600"
-                    onClick={nextpage}>SIGN UP</button></p>
+                    <p className="text-lg text-slate-900 self-center font-bold">Don’t have an account? <Link className="text-xl text-blue-600" to="/signup">SIGN UP</Link></p>
                 
                 </form>
             
