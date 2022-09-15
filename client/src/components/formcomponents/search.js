@@ -1,17 +1,23 @@
-import {useSelector, useDispatch} from 'react-redux';
+// import {useSelector, useDispatch} from 'react-redux';
 
-import { DestinationbyTitle } from '../../redux/findPlacebyTitle';
+// import { DestinationbyTitle } from '../../redux/findPlacebyTitle';
 
 import { useNavigate } from 'react-router-dom';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Search () {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const navigate = useNavigate()
-    const state = useSelector((state) => state);
-    const menu = state['byTitle']['menu'];
-    const loading = state['byTitle']['loading'];
+    // const state = useSelector((state) => state);
+    // const menu = state['byTitle']['menu'];
+    // const loading = state['byTitle']['loading'];
+    const [title, setTitle] = useState("")
+    const [tags, setTags] = useState("")
+
+    useEffect(() => {
+        // dispatch(DestinationbyTitle())
+    },[])
 
     return (
         <>
@@ -20,12 +26,14 @@ function Search () {
                 <input type="text"
                  placeholder="search *" 
                  className="py-2 px-4 border border-slate-400 
-                 rounded-lg"></input>
+                 rounded-lg"
+                 onChange={(e) => setTitle(e.target.value)}></input>
 
                 <input type="text" 
                 placeholder="search tags *" 
                 className="py-2 px-4 border border-slate-400 
-                rounded-lg"></input>
+                rounded-lg"
+                onChange={(e) => setTags(e.target.value)}></input>
 
                 <button className="bg-blue-600 text-white py-3 
                 px-4 rounded-xl">search</button>
