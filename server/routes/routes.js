@@ -31,7 +31,7 @@ export const addDestination = (req, res, next) => {
             data: data
         })
     })
-}
+};
 
 export const getDestinationbyTag = (req, res) => {
     InputSchema.findOne({ tags: req.params.tags }, (err, data) => {
@@ -49,7 +49,7 @@ export const getDestinationbyTag = (req, res) => {
             })
         }
     })
-}
+};
 
 export const searchDestination = (req, res, next) => {
     console.log(req.params)
@@ -69,7 +69,7 @@ export const searchDestination = (req, res, next) => {
                 })
             }
         })
-}
+};
 
 export const getAlldestination = (req, res) => {
     InputSchema.find(function (err, data) {
@@ -87,7 +87,7 @@ export const getAlldestination = (req, res) => {
             })
         }
     })
-}
+};
 
 export const createUser = async (req, res, next) => {
     const { firstname, lastname, email, password } = req.body
@@ -100,9 +100,12 @@ export const createUser = async (req, res, next) => {
 
     if (existingTourist) {
         return res.send({
-            status: 401,
+            status: 400,
             message: "Only one Tourist for one Email"
         })
+    //     return res
+    //   .status(400)
+    //   .json({ message: "User already exists! Login Instead" });
     }
 
     const hashed = bcrypt.hashSync(password)
@@ -126,7 +129,14 @@ export const createUser = async (req, res, next) => {
             data: data
         })
     })
-}
+};
+    // try {
+    //     await credentials.save();
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    //   return res.status(201).json({ message: credentials });
+    // };
 
 export const loginTourist = async (req, res, next) => {
     const { email, password } = req.body
@@ -138,19 +148,25 @@ export const loginTourist = async (req, res, next) => {
         console.log(err)
     }
     if (!existingTourist) {
-        return res.send({
-            status: 400,
-            message: "Tourist is not registered"
-        })
+        // return res.send({
+        //     status: 400,
+        //     message: "Tourist is not registered"
+        // })
+        return res.status(400).json({ message: "User not found. Signup Please" });
     }
     const isPasswordCorrect = bcrypt.compareSync(password, existingTourist.password)
     if (!isPasswordCorrect) {
-        return res.send({
-            status: 400,
-            message: "password is incorrect"
-        })
+        // return res.send({
+        //     status: 400,
+        //     message: "password is incorrect"
+        // })
+        return res.status(400).json({ message: "Inavlid Email / Password" });
     }
     const token = sign({ id: existingTourist._id }, SECRET_KEY, { expiresIn: "60s" })
+
+    if (req.cookies[`${existingTourist._id}`]) {
+        req.cookies[`${existingTourist._id}`] = "";
+      }
 
     res.cookie(String(existingTourist._id), token, {
         path: "/",
@@ -165,50 +181,63 @@ export const loginTourist = async (req, res, next) => {
         user: existingTourist,
         token
     })
-}
+    // return res
+    // .status(200)
+    // .json({ message: "Successfully Logged In", user: existingTourist, token });
+};
 
 export const VerifyToken = (req, res, next) => {
-    const cookies = req.headers.cookie
-    // const headers = req.headers['authorization']
+    const cookies = req.headers.cookie;
     const token = cookies.split("=")[1];
     if (!token) {
-        res.send({
-            status: 404,
-            message: "no token found"
-        })
+        // res.send({
+        //     status: 404,
+        //     message: "no token found"
+        // })
+        res.status(404).json({ message: "No token found" });
     }
     verify(String(token), SECRET_KEY, (err, user) => {
         if (err) {
-            res.send({
-                status: 400,
-                message: "invalid token is used here"
-            })
+            // res.send({
+            //     status: 400,
+            //     message: "invalid token is used here",
+            // })
+            return res.status(400).json({ message: "Invalid Token" });
         }
-        console.log(user._id,"userid")
-        req.id = user.id
+        console.log(user.id,"userid")
+        req.id = user.id;
     })
-    next()
-}
+    next();
+};
 
 export const findTourist = async (req, res) => {
     const userId = req.id
-    TouristDetails.findById(userId, "-password",
-        (err, data) => {
-            if (err) {
-                res.send(err)
-            }
-            else {
-                if (!data) {
-                    res.send({
-                        status: 404,
-                        message: "Tourist does not exist"
-                    })
-                }
-                return res.send({
-                    status: 200,
-                    message: "Welcome Tourist",
-                    data: {data}
-                })
-            }
-        })
-}
+    // TouristDetails.findById(userId, "-password",
+    //     (err, data) => {
+    //         if (err) {
+    //             res.send(err)
+    //         }
+    //         else {
+    //             if (!data) {
+    //                 res.send({
+    //                     status: 404
+    //                 })
+    //             }
+    //             return res.send({
+    //                 status: 200,
+    //                 message: "Welcome Tourist",
+    //                 data: data
+    //             })
+    //         }
+    //     })
+let user;
+  try {
+    user = await TouristDetails.findById(userId, "-password");
+  } catch (err) {
+    return new Error(err);
+  }
+  if (!user) {
+    return res.status(404)
+  }
+  return res.status(200).json({ user });
+};
