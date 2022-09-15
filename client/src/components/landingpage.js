@@ -12,7 +12,7 @@ import { fetchPlaces } from "../redux/placeSlice"
 import {useSelector, useDispatch} from 'react-redux';
 
 function Landing () {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const {menu, loading} = useSelector((state) => state.AllData);
 
     useEffect(() => {
