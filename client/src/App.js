@@ -6,6 +6,8 @@ import Signup from "./components/signup"
 
 import Landing from "./components/landingpage";
 
+import Userpage from "./components/userpage";
+
 function App() {
   return (
     <>
@@ -13,6 +15,7 @@ function App() {
         <Route exact path="/" element={<Login/>}></Route>
         <Route path="/signup" element={<Signup/>}></Route>
         <Route path="/home" element={<Landing/>}></Route>
+        <Route path="/user" element={<Userpage/>}></Route>
       </Routes>
     </>
   );
