@@ -16,6 +16,10 @@ const TourSchema = new mongoose.Schema({
     image: {
         data: Buffer,
         contentType: String
+    },
+    time: {
+        type: String,
+        required: true
     }
 })
 
