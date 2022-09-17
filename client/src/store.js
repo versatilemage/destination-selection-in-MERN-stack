@@ -6,10 +6,13 @@ import TitleReducer from "./redux/findPlacebyTitle";
 
 import selectedTourist from "./redux/TouristDetails";
 
+import selectedDestination from "./redux/click";
+
 const rootReducer = combineReducers({
     AllData: allPlaces,
     byTitle: TitleReducer,
-    TouristDetails: selectedTourist
+    TouristDetails: selectedTourist,
+    clickDestination: selectedDestination
 })
 
 const store = configureStore({
