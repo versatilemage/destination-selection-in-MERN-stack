@@ -1,26 +1,28 @@
 import { InputSchema } from '../model/schema.js';
 import { TouristDetails } from '../model/userSchema.js';
 import Jwt from 'jsonwebtoken';
-import fs from "fs"
-import bcrypt from "bcryptjs"
+import Moment from "moment";
+import fs from "fs";
+import bcrypt from "bcryptjs";
 import multer from "multer"
 const { sign, verify } = Jwt
-import('dotenv')
-const SECRET_KEY = "qwertyuioplllllkjhgfdsazxcvbnm"
+import * as dotenv from 'dotenv'
+const SECRET_KEY = "qwertyuioplllllkjhgfdsazxcvbnm";
 
 export const addDestination = (req, res, next) => {
     const { title, message, tags } = req.body
+    const myDate = Moment().format('YYYYMMDD HH:mm')
 
     const guide = new InputSchema({
         title: title,
         message: message,
         tags: tags,
+        time: myDate,
         image: {
             data: fs.readFileSync("uploads/" + req.file.filename),
             contentType: "image/jpg"
         }
     })
-    // console.log(req.file.filename,"filename")
     guide.save((err, data) => {
         if (err) {
             res.send(err)
@@ -53,7 +55,7 @@ export const getDestinationbyTag = (req, res) => {
 
 export const searchDestination = (req, res, next) => {
     console.log(req.params)
-    InputSchema.findOne({ title: req.params.title },
+    InputSchema.find({ title: req.params.title },
         (err, data) => {
             if (err) {
                 res.send(err)
@@ -65,7 +67,7 @@ export const searchDestination = (req, res, next) => {
                 return res.send({
                     status: 200,
                     message: "data is collected",
-                    data: [data]
+                    data: data
                 })
             }
         })
@@ -162,7 +164,7 @@ export const loginTourist = async (req, res, next) => {
         // })
         return res.status(400).json({ message: "Inavlid Email / Password" });
     }
-    const token = sign({ id: existingTourist._id }, SECRET_KEY, { expiresIn: "60s" })
+    const token = sign({ id: existingTourist._id }, SECRET_KEY, { expiresIn: "1h" })
 
     if (req.cookies[`${existingTourist._id}`]) {
         req.cookies[`${existingTourist._id}`] = "";
@@ -170,7 +172,7 @@ export const loginTourist = async (req, res, next) => {
 
     res.cookie(String(existingTourist._id), token, {
         path: "/",
-        expiresIn: new Date(Date.now() + 1000 * 60),
+        expiresIn: new Date(Date.now() + 1000 * 3600),
         httpOnly: true,
         sameSite: "lax",
     })
@@ -190,19 +192,19 @@ export const VerifyToken = (req, res, next) => {
     const cookies = req.headers.cookie;
     const token = cookies.split("=")[1];
     if (!token) {
-        // res.send({
-        //     status: 404,
-        //     message: "no token found"
-        // })
-        res.status(404).json({ message: "No token found" });
+        res.send({
+            status: 404,
+            message: "no token found"
+        })
+        // res.status(404).json({ message: "No token found" });
     }
     verify(String(token), SECRET_KEY, (err, user) => {
         if (err) {
-            // res.send({
-            //     status: 400,
-            //     message: "invalid token is used here",
-            // })
-            return res.status(400).json({ message: "Invalid Token" });
+            res.send({
+                status: 400,
+                message: "invalid token is used here",
+            })
+            // return res.status(400).json({ message: "Invalid Token" });
         }
         console.log(user.id,"userid")
         req.id = user.id;
@@ -241,3 +243,19 @@ let user;
   }
   return res.status(200).json({ user });
 };
+
+// export const Refresh = (req, res, next) => {
+//     const cookies = req.headers.cookie;
+//     const previous = cookies.split("="[1]);
+
+//     if (!previous){
+//         return res.status(400).json({message: "no token found"})
+//     }
+//     verify(String(previous),SECRET_KEY,(err, user) => {
+//         if(err){
+//             console.log(err)
+//             return res.status(403).json({message: "failed the authentication"})
+//         }
+//         res.clearCookie(`${user.id}`)
+//     })
+// }
