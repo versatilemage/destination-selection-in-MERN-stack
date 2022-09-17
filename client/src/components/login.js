@@ -12,39 +12,46 @@ function Login () {
 
     const navigate = useNavigate()
 
-    const[emails, setemail] = useState("");
-    const[passwords, setPassword] = useState("")
+    const[emails, setemail] = useState("")
+    const [passwords, setPassword] = useState("")
+    // const[Inputs, setInputs] = useState({
+    //     email: "",
+    //     password: ""
+    // });
 
-    // const homepage = async() => {
-    // const config = {headers: {
-    //     'Content-type':'application/json'
-    // }}
-
-    //     const res = axios.post("http://localhost:6001/login", config,{
-    //         email: emails,
-    //         password: passwords
-    //     }).catch((err) => console.log(err))
-    //     const datas = await res.data;
-    //     return datas
+    // const handleChanges = (e) => {
+    //     setInputs((i) => ({
+    //         ...i,
+    //         [e.target.name]: e.target.value
+    //     }))
     // }
 
     const homepage = async() => {
-        const formdata = new FormData()
-        formdata.append("email", emails);
-        formdata.append("password", passwords);
-
-        const config = {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            }
-          }
-
-        await axios.post("http://localhost:6001/login",formdata, config)
+        const res = await axios.post("http://localhost:6001/login",{
+            email: emails,
+            password: passwords
+        }).catch((err) => console.log(err,"login error"))
+        const datas = await res.data;
+        return datas
     }
+
+    // const homepage = async() => {
+    //     const formdata = new FormData()
+    //     formdata.append("email", emails);
+    //     formdata.append("password", passwords);
+
+    //     const config = {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data"
+    //         }
+    //       }
+
+    //     await axios.post("http://localhost:6001/login",formdata, config)
+    // }
 
     const handleForm = (e) => {
         e.preventDefault()
-        homepage().then(() => navigate("/user"))
+        homepage().then(() => navigate("/home"))
     }
 
     return (
