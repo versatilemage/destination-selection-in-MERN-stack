@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import Moment from "moment";
 import multer from "multer"
 const PORT = 6001
 const app = express()
@@ -71,7 +72,10 @@ const uploadPic = multer({
   limits: {
     fileSize: 90000000,
   },
-})
+});
+
+let myDate = Moment().format('YYYYMMDD HH:mm')
+console.log(myDate)
 
 app.post("/newdestination", upload.single("image"), addDestination);
 
