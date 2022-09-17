@@ -1,25 +1,19 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
 import axios from "axios";
 
-import { createAsyncThunk } from '@reduxjs/toolkit';
-
-export const fetchPlaces = createAsyncThunk('place/getPlace', async() => {
-    try{
-        const res = await fetch("http://localhost:6001/allplace").then((data) => {
-            return data.json()
-        })
-        return res
-    } catch (err) {
-        return err
+export const fetchPlaces = createAsyncThunk('place/getPlace',
+    async() => {
+        const {data} = await axios.get("http://localhost:6001/allplace") 
+        return data
     }
-})
+)
 
 const getAlldestination = createSlice({
     name: "Allplace",
     initialState: {
         menu: [],
-        loading: false
+        loading: null
     },
     extraReducers: {
         [fetchPlaces.pending]: (state, action) => {

@@ -1,34 +1,30 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-// import axios from "axios";
+import axios from "axios";
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 
-export const fetchTouristdetails = createAsyncThunk("cred/usercred", async() => {
-    try{
-        const res = await fetch(`http://localhost:6001/findtourist`,{withCredentials: true}).then((data) => {
-            return data.json()
-        })
-        return res
-    }catch(err) {
-        return(err)
+export const fetchTouristdetails = createAsyncThunk("cred/usercred",
+    async() => {
+        const {data} = await axios.get("http://localhost:6001/findtourist",{withCredentials: true}) 
+        return data
     }
-})
+)
 
 const getTouristCredentials = createSlice({
     name:"TouristDetails",
     initialState: {
         loading: false,
-        menu: []
+        tourist: []
     },
     extraReducers: {
         [fetchTouristdetails.pending]: (state, action) => {
             state.loading = true
         },
         [fetchTouristdetails.fulfilled]: (state, action) => {
-            state.menu = action.payload.user;
+            state.tourist = action.payload.user;
             state.loading = false
         },
         [fetchTouristdetails.rejected]: (state, action) => {
