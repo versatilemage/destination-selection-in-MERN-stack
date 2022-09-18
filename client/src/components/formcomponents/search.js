@@ -34,10 +34,10 @@ function Search () {
                  className="py-2 px-4 border border-slate-400 
                  rounded-lg"></input>
 
-                {/* <input type="text" 
+                <input type="text" 
                 placeholder="search tags *" 
                 className="py-2 px-4 border border-slate-400 
-                rounded-lg"></input> */}
+                rounded-lg"></input>
 
                 <button className="bg-blue-600 text-white py-3 
                 px-4 rounded-xl" type='submit'>search</button>
