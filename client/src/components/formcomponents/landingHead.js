@@ -1,29 +1,35 @@
 import React, { useEffect} from 'react';
 
-import axios from 'axios';
-
 import {useSelector, useDispatch} from 'react-redux';
 
+import {Link} from "react-router-dom"
+
 import { fetchTouristdetails } from '../../redux/TouristDetails';
+
+import { loginAction } from '../../redux/loginStatus';
+
+import axios from "axios";
 
 axios.defaults.withCredentials = true
 
 function LandingHead () {
-    // const [user, setUser] = useState();
     const dispatch = useDispatch()
-    const {tourist, loading} = useSelector((state) => state.TouristDetails);
-
-    // const sendRequest = async() => {
-    //     const res = await axios.get("http://localhost:6001/findtourist",{withCredentials: true})
-    //     .catch(err => console.log(err))
-    //     const datas = await res.data;
-    //     return datas;
-    //     // return await res.data
-    //     // console.log(res.data)
-    // }
+    const isLoggedin = useSelector((state) => state.onlineStatus);
+    const {tourist} = useSelector((state) => state.TouristDetails);
+    const sendlogoutRequest = async() => {
+        const res = await axios.post("http://localhost:6001/logout", null,{
+            withCredentials: true
+        }); 
+        if(res.status === 200){
+            return res;
+        }
+        return new Error("unable to logout");
+    }
+    const handleLogout = () => {
+        sendlogoutRequest().then(() => dispatch(loginAction.logout()));
+    };
 
     useEffect(() => {
-        // sendRequest().then((data) => setUser(data.user))
         dispatch(fetchTouristdetails())
       },[]);
     return(
@@ -33,7 +39,9 @@ function LandingHead () {
                     <div className="flex flex-row space-x-6 items-center">
                         {/* {tourist && <img src={`data:image/png;base64,${btoa(String.fromCharCode(...new Uint8Array(tourist.userimage.data.data)))}`} alt="no img found" className="rounded-full w-12 border-4 border-amber-500 bg-slate-100 object-cover aspect-square"/>} */}
                         {tourist && <h1 className="text-xl font-bold capitalize">{tourist.firstname}</h1>}
-                        <button className="uppercase text-3xl font-medium bg-red-600 rounded-lg text-white px-5 font-lightbold py-1 uppercase text-center">o</button>  
+                        {isLoggedin && <Link className="uppercase text-3xl font-medium 
+                        bg-red-600 rounded-lg text-white px-5 font-lightbold py-1 
+                        uppercase text-center" onClick={handleLogout} to="/">o</Link> }
                     </div>     
             </header>
         </>
