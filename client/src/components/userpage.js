@@ -46,7 +46,7 @@ function Userpage () {
 
                         <div className="flex flex-row justify-end object-cover">
                             <img src={`data:image/png;base64,${base64String}`} alt={`img-loader`} 
-                            className="rounded-3xl object-cover aspect-square w-[40em] h-[30em]"/>
+                            className="rounded-3xl object-fill aspect-square w-[40em] h-[30em]"/>
                         </div>
                     </div>
                 })}
