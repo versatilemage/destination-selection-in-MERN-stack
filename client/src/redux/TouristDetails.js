@@ -13,6 +13,13 @@ export const fetchTouristdetails = createAsyncThunk("cred/usercred",
     }
 )
 
+// export const refreshToken = createAsyncThunk("refresh/userRefresh",
+// async() => {
+//     const {data} = await axios.get("http://localhost:6001/refresh",{withCredentials: true}) 
+//     return data
+//     }
+// )
+
 const getTouristCredentials = createSlice({
     name:"TouristDetails",
     initialState: {
