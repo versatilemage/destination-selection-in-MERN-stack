@@ -2,29 +2,23 @@ import FormHeader from "./formheader"
 
 import { useNavigate } from 'react-router-dom';
 
+import {useDispatch} from 'react-redux';
+
 import {Link} from "react-router-dom"
 
 import { useState } from "react";
+
+import { loginAction } from '../redux/loginStatus';
 
 import axios from "axios";
 
 function Login () {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const[emails, setemail] = useState("")
     const [passwords, setPassword] = useState("")
-    // const[Inputs, setInputs] = useState({
-    //     email: "",
-    //     password: ""
-    // });
-
-    // const handleChanges = (e) => {
-    //     setInputs((i) => ({
-    //         ...i,
-    //         [e.target.name]: e.target.value
-    //     }))
-    // }
 
     const homepage = async() => {
         const res = await axios.post("http://localhost:6001/login",{
@@ -35,31 +29,21 @@ function Login () {
         return datas
     }
 
-    // const homepage = async() => {
-    //     const formdata = new FormData()
-    //     formdata.append("email", emails);
-    //     formdata.append("password", passwords);
-
-    //     const config = {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data"
-    //         }
-    //       }
-
-    //     await axios.post("http://localhost:6001/login",formdata, config)
-    // }
-
     const handleForm = (e) => {
         e.preventDefault()
-        homepage().then(() => navigate("/home"))
+        homepage()
+        .then(() => dispatch(loginAction.login()))
+        .then(() => navigate("/home"))
+        console.log("login is working",loginAction.login())
     }
 
     return (
         <>
             <FormHeader/>
-            <div className="flex flex-row justify-center h-[35em] items-center" onSubmit={handleForm}>
+            <div className="flex flex-row justify-center h-[35em] items-center">
                 
-                <form className="flex flex-col w-2/6 h-84 px-5 py-8 rounded-lg space-y-3 shadow-lg shadow-slate-500">
+                <form className="flex flex-col w-2/6 h-84 px-5 py-8 rounded-lg space-y-3 shadow-lg shadow-slate-500"
+                onSubmit={handleForm}>
                     
                     <span className="bg-violet-500 rounded-full p-5 self-center"></span>
                     
