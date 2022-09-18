@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import multer from "multer"
 const { sign, verify } = Jwt
 import * as dotenv from 'dotenv'
-const SECRET_KEY = "qwertyuioplllllkjhgfdsazxcvbnm";
+dotenv.config()
 
 export const addDestination = (req, res, next) => {
     const { title, message, tags } = req.body
@@ -164,7 +164,7 @@ export const loginTourist = async (req, res, next) => {
         // })
         return res.status(400).json({ message: "Inavlid Email / Password" });
     }
-    const token = sign({ id: existingTourist._id }, SECRET_KEY, { expiresIn: "1h" })
+    const token = sign({ id: existingTourist._id }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" })
 
     if (req.cookies[`${existingTourist._id}`]) {
         req.cookies[`${existingTourist._id}`] = "";
@@ -198,7 +198,7 @@ export const VerifyToken = (req, res, next) => {
         })
         // res.status(404).json({ message: "No token found" });
     }
-    verify(String(token), SECRET_KEY, (err, user) => {
+    verify(String(token), process.env.JWT_SECRET_KEY, (err, user) => {
         if (err) {
             res.send({
                 status: 400,
@@ -251,11 +251,43 @@ let user;
 //     if (!previous){
 //         return res.status(400).json({message: "no token found"})
 //     }
-//     verify(String(previous),SECRET_KEY,(err, user) => {
+//     verify(String(previous),process.env.JWT_SECRET_KEY,(err, user) => {
 //         if(err){
 //             console.log(err)
 //             return res.status(403).json({message: "failed the authentication"})
 //         }
 //         res.clearCookie(`${user.id}`)
+//         req.cookies[`${user.id}`] = "";
+
+//         const token = sign({id: user.id}, process.env.JWT_SECRET_KEY,{expiresIn: "30s"})
+
+//         res.cookie(String(user.id), token, {
+//             path: "/",
+//             expiresIn: new Date(Date.now() + 1000 * 30),
+//             httpOnly: true,
+//             sameSite: "lax",
+//         });
+
+//         req.id = user.id;
+//         next();
 //     })
 // }
+
+export const logout = (req, res, next) => {
+    const cookies = req.headers.cookie;
+    const previous = cookies.split("=")[1];
+
+    if (!previous){
+        return res.status(400).json({message: "no token found"})
+    }
+    verify(String(previous),process.env.JWT_SECRET_KEY,(err, user) => {
+        if(err){
+            console.log(err)
+            return res.status(403).json({message: "failed the authentication"})
+        }
+        res.clearCookie(`${user.id}`)
+        req.cookies[`${user.id}`] = "";
+        return res.status(200).json({message:"successfully logged out"})
+    })
+}
+
