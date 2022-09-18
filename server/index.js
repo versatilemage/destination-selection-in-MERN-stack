@@ -7,6 +7,8 @@ import Moment from "moment";
 import multer from "multer"
 const PORT = 6001
 const app = express()
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 app.use(bodyParser.json())
 
@@ -24,10 +26,11 @@ import {
   getDestinationbyTag,
   loginTourist,
   findTourist,
-  VerifyToken
+  VerifyToken,
+  logout
 } from "./routes/routes.js"
 
-mongoose.connect("mongodb+srv://wildbadger:jkhinpiqosq@clusterbankapp.pn7rge3.mongodb.net/?retryWrites=true&w=majority", {
+mongoose.connect(`mongodb+srv://wildbadger:${process.env.PASSWORD}@clusterbankapp.pn7rge3.mongodb.net/?retryWrites=true&w=majority`, {
   useNewUrlParser: true,
   useUnifiedtopology: true
 }, (err) => {
@@ -90,6 +93,8 @@ app.post("/createuser", uploadPic.single("userimage"), createUser);
 app.post("/login", loginTourist);
 
 app.get("/findtourist", VerifyToken, findTourist);
+
+app.post("/logout", VerifyToken, logout)
 
 app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`)
