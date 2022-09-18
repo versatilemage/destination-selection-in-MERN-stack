@@ -8,11 +8,17 @@ import selectedTourist from "./redux/TouristDetails";
 
 import selectedDestination from "./redux/click";
 
+import status from "./redux/loginStatus";
+
+import statusLog from "./redux/logout";
+
 const rootReducer = combineReducers({
     AllData: allPlaces,
     byTitle: TitleReducer,
     TouristDetails: selectedTourist,
-    clickDestination: selectedDestination
+    clickDestination: selectedDestination,
+    onlineStatus: status,
+    loggedout : statusLog
 })
 
 const store = configureStore({
