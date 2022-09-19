@@ -6,7 +6,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const DestinationbyTitle = createAsyncThunk('destinationTitle', async(search) => {
     try{
-        const res = await fetch(`http://localhost:6001/allplace/getbytitle/${search}`).then((data) => {
+        const res = await fetch(`http://localhost:6001/allplace/getbytags/${search}`).then((data) => {
             return data.json()
         })
         return res
