@@ -84,7 +84,7 @@ app.post("/newdestination", upload.single("image"), addDestination);
 
 app.get("/getbytitle/:title", searchDestination);
 
-app.get("/getbytags/:tags", getDestinationbyTag);
+app.get("/getbytags/:key", getDestinationbyTag);
 
 app.get("/allplace", getAlldestination);
 
