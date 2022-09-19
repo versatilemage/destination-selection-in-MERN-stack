@@ -35,21 +35,33 @@ export const addDestination = (req, res, next) => {
     })
 };
 
-export const getDestinationbyTag = (req, res) => {
-    InputSchema.findOne({ tags: req.params.tags }, (err, data) => {
-        if (err) {
-            res.send({
-                status: 400,
-                message: "data cannot be retrived",
-            })
-        }
-        else {
-            return res.send({
-                status: 200,
-                message: "Data retrived",
-                data: [data]
-            })
-        }
+export const getDestinationbyTag = async(req, res) => {
+    const data = await InputSchema.find(
+        {
+        "$or":[
+            {tags:{$regex:req.params.key}},
+            {title:{$regex:req.params.key}}
+        ]
+    })
+    // , (err) => {
+    //     if (err) {
+    //         res.send({
+    //             status: 400,
+    //             message: "data cannot be retrived",
+    //         })
+    //     }
+    //     else {
+    //         return res.send({
+    //             status: 200,
+    //             message: "Data retrived",
+    //             data: data
+    //         })
+    //     }
+    // }
+    res.send({
+        status: 200,
+        message: "data is collected",
+        data: data
     })
 };
 
