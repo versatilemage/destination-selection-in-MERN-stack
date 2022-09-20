@@ -5,15 +5,10 @@ import axios from "axios";
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const DestinationbyTitle = createAsyncThunk('destinationTitle', async(search) => {
-    try{
-        const res = await fetch(`http://localhost:6001/allplace/getbytags/${search}`).then((data) => {
-            return data.json()
-        })
-        return res
-    }catch (err) {
-        return err
+        const {data} = await axios.get(`http://localhost:6001/allplace/getbytags/${search}`)
+        return data
     }
-})
+)
 
 const titleIdentifier = createSlice({
     name: "byTitle",
