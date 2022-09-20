@@ -10,7 +10,7 @@ const TourSchema = new mongoose.Schema({
         required: true
     },
     tags: {
-        type: String,
+        type: [String],
         required: true
     },
     image: {
@@ -20,6 +20,9 @@ const TourSchema = new mongoose.Schema({
     time: {
         type: String,
         required: true
+    },
+    creator: {
+        type: String
     }
 })
 
