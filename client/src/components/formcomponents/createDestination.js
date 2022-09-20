@@ -1,3 +1,5 @@
+import React, { useEffect} from 'react';
+
 import axios from "axios"
 
 import { useState } from "react";
@@ -6,12 +8,20 @@ import { useNavigate } from 'react-router-dom';
 
 import {useSelector, useDispatch} from 'react-redux';
 
+import { fetchTouristdetails } from '../../redux/TouristDetails';
+
 function CreateDestinations () {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [title, setTitle] = useState("")
     const [tags, setTags] = useState("")
     const [message, setMessage] = useState("")
     const [file, setFile] = useState("")
+    const {tourist} = useSelector((state) => state.TouristDetails);
+
+    useEffect(() => {
+        dispatch(fetchTouristdetails())
+      },[]);
 
     // console.log(title, tags, message, file)
 
@@ -22,6 +32,7 @@ function CreateDestinations () {
         formdata.append("tags", tags);
         formdata.append("message", message);
         formdata.append("image", file);
+        formdata.append("creator", (tourist.firstname));
 
         const config = {
             headers: {
