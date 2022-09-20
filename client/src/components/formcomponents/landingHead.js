@@ -27,6 +27,7 @@ function LandingHead () {
     }
     const handleLogout = () => {
         sendlogoutRequest().then(() => dispatch(loginAction.logout()));
+        alert("do you really want to logout")
     };
 
     useEffect(() => {
