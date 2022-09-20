@@ -3,8 +3,8 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axios from "axios";
 
 export const fetchPlaces = createAsyncThunk('place/getPlace',
-    async() => {
-        const {data} = await axios.get("http://localhost:6001/allplace") 
+    async(page) => {
+        const {data} = await axios.get(`http://localhost:6001/allplace?page=${page}`) 
         return data
     }
 )
