@@ -4,13 +4,13 @@ import Jwt from 'jsonwebtoken';
 import Moment from "moment";
 import fs from "fs";
 import bcrypt from "bcryptjs";
-import multer from "multer"
-const { sign, verify } = Jwt
+import multer from "multer";
+const { sign, verify } = Jwt;
 import * as dotenv from 'dotenv'
 dotenv.config()
 
 export const addDestination = (req, res, next) => {
-    const { title, message, tags } = req.body
+    const { title, message, tags, creator} = req.body
     const myDate = Moment().format('YYYYMMDD HH:mm')
 
     const guide = new InputSchema({
@@ -18,6 +18,7 @@ export const addDestination = (req, res, next) => {
         message: message,
         tags: tags,
         time: myDate,
+        creator: creator,
         image: {
             data: fs.readFileSync("uploads/" + req.file.filename),
             contentType: "image/jpg"
@@ -86,6 +87,11 @@ export const searchDestination = (req, res, next) => {
 };
 
 export const getAlldestination = (req, res) => {
+    const page = req.query.page || 1
+    const limit = req.query.limit || 8
+
+    const startIndex = (page - 1) * limit
+    const endIndex = page * limit
     InputSchema.find(function (err, data) {
         if (err) {
             res.send({
@@ -97,7 +103,9 @@ export const getAlldestination = (req, res) => {
             return res.send({
                 status: 200,
                 message: "Data retrived",
-                data: data
+                // limit: (req.query.limit) || 8,
+                data: data.slice(startIndex, endIndex)
+                // data: data
             })
         }
     })
