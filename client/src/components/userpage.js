@@ -39,7 +39,7 @@ function Userpage () {
                             <h2 className="text-slate-500 text-xl">{item.tags}</h2>
                             <p className="text-slate-700 text-xl">{item.message}</p>
                             <div className="flex flex-col space-y-2">
-                                <h1 className="text-xl font-bold capitalize">created by: </h1>
+                                <h1 className="text-xl font-bold capitalize">created by: {item.creator}</h1>
                                 <h1 className="text-slate-500 text-lg">{myDate}</h1>
                             </div>
                         </div>
