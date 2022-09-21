@@ -9,15 +9,6 @@ import React, { useEffect, useState } from 'react';
 function Search () {
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    // const state = useSelector((state) => state);
-    // const menu = state['byTitle']['menu'];
-    // const loading = state['byTitle']['loading'];
-    // const [title, setTitle] = useState("")
-    // const [tags, setTags] = useState("")
-
-    // useEffect(() => {
-    //     dispatch(fetchClickedDestination())
-    // },[])
 
     const onClicked = (e) => {
         dispatch(fetchClickedDestination(e.target.elements[0].value));
