@@ -41,7 +41,8 @@ export const getDestinationbyTag = async(req, res) => {
         {
         "$or":[
             {tags:{$regex:req.params.key}},
-            {title:{$regex:req.params.key}}
+            {title:{$regex:req.params.key}},
+            {_id:{$regex:req.params.key}}
         ]
     })
     // , (err) => {
@@ -96,7 +97,7 @@ export const getAlldestination = (req, res) => {
         if (err) {
             res.send({
                 status: 400,
-                message: "data cannot be retrived"
+                message: "data cannot be retrived",
             })
         }
         else {
