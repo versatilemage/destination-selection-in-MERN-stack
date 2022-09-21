@@ -1,4 +1,3 @@
-// import Alt from "./userpic"
 import React, { useEffect, useState} from 'react';
 
 // import axios from 'axios';
@@ -15,21 +14,24 @@ import LandingHead from './formcomponents/landingHead';
 
 import { fetchPlaces } from "../redux/placeSlice"
 
+import { fetchClickedDestination } from '../redux/click';
+
 import {useSelector, useDispatch} from 'react-redux';
 
 function Landing () {
     const [page, setPage] = useState(1)
+    const [click, setClick] = useState("")
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const {menu, loading} = useSelector((state) => state.AllData);
 
     const nextpage = (e) => {
-        navigate("/user")
+        // dispatch(fetchClickedDestination(e.target.key))
+        // navigate("/user")
+        console.log(e.target.value)
     }
 
-    // console.log(page)
-
-    // const menuLength = (menu.length)
+    console.log(click)
 
     useEffect(() => {
         dispatch(fetchPlaces(page));
@@ -46,8 +48,8 @@ function Landing () {
                         const base64String = btoa(String.fromCharCode(...new Uint8Array(item.image.data.data)));
                         const myDate = Moment(item.time,"YYYYMMDD HH:mm").fromNow()
                 return <div className="grid grid-cols-1 rounded-3xl bg-slate-100 justify-items-start
-                         shadow-lg shadow-black my-5 box-border transition duration-700 hover:scale-105 mx-2" key={item._id}>
-                            <div className="h-48 flex flex-row">
+                         shadow-lg shadow-black my-5 box-border transition duration-700 hover:scale-105 mx-2" key={item._id} onClick={nextpage}>
+                            <div className="h-48 flex flex-row" >
                                 <div className="absolute p-4 text-xl font-bold text-slate-900 capitalize flex flex-col">
                                 <h1>{myDate}</h1>
                                 <h1>{item.creator}</h1>
