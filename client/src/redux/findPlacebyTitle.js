@@ -5,7 +5,7 @@ import axios from "axios";
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const DestinationbyTitle = createAsyncThunk('destinationTitle', async(search) => {
-        const {data} = await axios.get(`http://localhost:6001/allplace/getbytags/${search}`)
+        const {data} = await axios.get(`http://localhost:6001/getbytitle/${search}`)
         return data
     }
 )
