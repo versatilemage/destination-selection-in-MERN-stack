@@ -39,12 +39,12 @@ export const addDestination = (req, res, next) => {
 export const getDestinationbyTag = async(req, res) => {
     const data = await InputSchema.find(
         {
-        "$or":[
-            {tags:{$regex:req.params.key}},
-            {title:{$regex:req.params.key}},
-            {_id:{$regex:req.params.key}}
-        ]
-    })
+            "$or":[
+                    {tags:{$regex:req.params.key}},
+                    {title:{$regex:req.params.key}}
+            ]
+        }
+    )
     // , (err) => {
     //     if (err) {
     //         res.send({
@@ -67,9 +67,9 @@ export const getDestinationbyTag = async(req, res) => {
     })
 };
 
-export const searchDestination = (req, res, next) => {
-    console.log(req.params)
-    InputSchema.find({ title: req.params.title },
+export const searchDestination = async(req, res, next) => {
+    // console.log(req.params)
+    await InputSchema.find({ title: req.params.title },
         (err, data) => {
             if (err) {
                 res.send(err)
@@ -311,4 +311,3 @@ export const logout = (req, res, next) => {
         return res.status(200).json({message:"successfully logged out"})
     })
 }
-
