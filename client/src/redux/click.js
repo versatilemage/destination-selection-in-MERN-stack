@@ -6,7 +6,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchClickedDestination = createAsyncThunk("click/component",
 async(search) => {
-    const {data} = await axios.get(`http://localhost:6001/getbytitle/${search}`)
+    const {data} = await axios.get(`http://localhost:6001/getbytags/${search}`)
     return data
     }
 )
