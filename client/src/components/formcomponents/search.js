@@ -2,17 +2,20 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import { fetchClickedDestination } from '../../redux/click';
 
+import { DestinationbyTitle } from '../../redux/findPlacebyTitle';
+
 import { useNavigate } from 'react-router-dom';
 
 import React, { useEffect, useState } from 'react';
 
 function Search () {
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [title, setTitle] = useState("")
+    const [tags, setTags] = useState("")
 
     const onClicked = (e) => {
-        dispatch(fetchClickedDestination(e.target.elements[0].value));
-        e.target.elements[0].value = '';
+        dispatch(fetchClickedDestination(title || tags));
         navigate("/user")
     }
 
@@ -23,12 +26,14 @@ function Search () {
                 <input type="text"
                  placeholder="search *" 
                  className="py-2 px-4 border border-slate-400 
-                 rounded-lg"></input>
+                 rounded-lg"
+                 onChange={(e) => setTitle(e.target.value)}></input>
 
                 <input type="text" 
                 placeholder="search tags *" 
                 className="py-2 px-4 border border-slate-400 
-                rounded-lg"></input>
+                rounded-lg"
+                onChange={(e) => setTags(e.target.value)}></input>
 
                 <button className="bg-blue-600 text-white py-3 
                 px-4 rounded-xl" type='submit'>search</button>
