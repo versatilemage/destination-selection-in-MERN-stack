@@ -23,8 +23,6 @@ function CreateDestinations () {
         dispatch(fetchTouristdetails())
       },[]);
 
-    // console.log(title, tags, message, file)
-
     const HandleChanges = async(e) => {
         e.preventDefault()
         const formdata = new FormData()
@@ -41,6 +39,7 @@ function CreateDestinations () {
           }
 
         await axios.post(`http://localhost:6001/newdestination`, formdata, config)
+        alert("new destination is created")
     }
 
     const handleFile = (e) => { 
