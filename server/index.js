@@ -4,19 +4,19 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import Moment from "moment";
-import multer from "multer"
+import multer from "multer";
 const PORT = 6001
 const app = express()
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
-app.use(cookieParser())
+app.use(cookieParser());
 
-app.use(cors({credentials: true, origin:"http://localhost:3000"}))
+app.use(cors({credentials: true, origin:"http://localhost:3000"}));
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 import {
   addDestination,
@@ -28,7 +28,7 @@ import {
   findTourist,
   VerifyToken,
   logout
-} from "./routes/routes.js"
+} from "./routes/routes.js";
 
 mongoose.connect(`mongodb+srv://wildbadger:${process.env.PASSWORD}@clusterbankapp.pn7rge3.mongodb.net/?retryWrites=true&w=majority`, {
   useNewUrlParser: true,
@@ -39,7 +39,7 @@ mongoose.connect(`mongodb+srv://wildbadger:${process.env.PASSWORD}@clusterbankap
   } else {
     console.log("error")
   }
-})
+});
 
 const Storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -50,7 +50,7 @@ const Storage = multer.diskStorage({
     // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
     cb(null, `${file.originalname}`)
   }
-})
+});
 
 const users = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -61,14 +61,14 @@ const users = multer.diskStorage({
     // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
     cb(null, `${file.originalname}`)
   }
-})
+});
 
 const upload = multer({
   storage: Storage,
   limits: {
     fileSize: 10000000,
   }
-})
+});
 
 const uploadPic = multer({
   storage: users,
@@ -77,8 +77,8 @@ const uploadPic = multer({
   },
 });
 
-let myDate = Moment().format('YYYYMMDD HH:mm')
-console.log(myDate)
+let myDate = Moment().format('YYYYMMDD HH:mm');
+console.log(myDate);
 
 app.post("/newdestination", upload.single("image"), addDestination);
 
@@ -94,8 +94,8 @@ app.post("/login", loginTourist);
 
 app.get("/findtourist", VerifyToken, findTourist);
 
-app.post("/logout", VerifyToken, logout)
+app.post("/logout", VerifyToken, logout);
 
 app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`)
-})
+});
