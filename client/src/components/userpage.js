@@ -14,7 +14,7 @@ function Userpage () {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const {loading, destination} = useSelector((state) => state.clickDestination)
+    const {destination} = useSelector((state) => state.clickDestination)
 
     // useEffect(() => {
     //     dispatch(fetchClickedDestination())
