@@ -20,7 +20,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 function Landing () {
     const [page, setPage] = useState(1)
-    const [click, setClick] = useState("")
+    // const [click, setClick] = useState("")
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const {menu, loading} = useSelector((state) => state.AllData);
@@ -31,7 +31,7 @@ function Landing () {
         console.log(e.target.value)
     }
 
-    console.log(click)
+    // console.log(click)
 
     useEffect(() => {
         dispatch(fetchPlaces(page));
@@ -48,7 +48,7 @@ function Landing () {
                         const base64String = btoa(String.fromCharCode(...new Uint8Array(item.image.data.data)));
                         const myDate = Moment(item.time,"YYYYMMDD HH:mm").fromNow()
                 return <div className="grid grid-cols-1 rounded-3xl bg-slate-100 justify-items-start
-                         shadow-lg shadow-black my-5 box-border transition duration-700 hover:scale-105 mx-2" key={item._id} onClick={nextpage}>
+                         shadow-lg shadow-black my-5 box-border transition duration-700 hover:scale-105 mx-2" key={item._id}>
                             <div className="h-48 flex flex-row" >
                                 <div className="absolute p-4 text-xl font-bold text-slate-900 capitalize flex flex-col">
                                 <h1>{myDate}</h1>
